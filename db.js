@@ -17,9 +17,9 @@ const sync = async() => {
 
         CREATE TABLE students(
             id UUID PRIMARY KEY default uuid_generate_v4(),
-            first_name VARCHAR(255) NOT NULL UNIQUE,
+            first_name VARCHAR(255) NOT NULL,
             CHECK (char_length(first_name) > 0),
-            last_name VARCHAR(255) NOT NULL UNIQUE,
+            last_name VARCHAR(255) NOT NULL,
             CHECK (char_length(last_name) > 0),
             "schoolId" UUID REFERENCES schools(id)
 
@@ -32,17 +32,36 @@ const sync = async() => {
     const seedSchools = ['UCLA', 'USC', 'UCSD', 'Berkeley', 'Cal State Fullerton'];
     const [UCLA, USC, UCSD, BERKELEY, CSUF] = 
     await Promise.all(seedSchools.map(school=> createSchool(school)));
-    
     console.log(UCLA);
+    const seedStudents = [
+        { firstName: 'Mike', lastName: 'Jordan', schoolId: USC.id },
+        { firstName: 'Jim', lastName: 'Smith', schoolId: UCSD.id },
+        { firstName: 'Daniel', lastName: 'Lee', schoolId: BERKELEY.id },
+        { firstName: 'Jennifer', lastName: 'Ran', schoolId: CSUF.id },
+        { firstName: 'Lisa', lastName: 'Kim', schoolId: UCLA.id },
+        { firstName: 'Natalie', lastName: 'Flemming', schoolId: BERKELEY.id },
+        { firstName: 'Stanley', lastName: 'Marsh', schoolId: UCLA.id },
+        { firstName: 'Bart', lastName: 'Simpson', schoolId: UCLA.id },
+    ];
+    
+    Promise.all(seedStudents.map(student=>createStudent(student.firstName, student.lastName, student.schoolId)));
 
 };
 
 const createSchool = async(name) => {
-    return (await client.query('INSERT INTO schools(name) VALUES($1) returning *', [name])).rows[0];
+    return (await client.query('INSERT INTO schools(name) VALUES($1) RETURNING *', [name])).rows[0];
+}
+
+const createStudent = async(firstName, lastName, schoolId) => {
+    const SQL = 'INSERT INTO students(first_name, last_name, "schoolId") VALUES( $1, $2, $3) RETURNING *';
+    return (await client.query(SQL, [firstName, lastName, schoolId])).rows[0];
 }
 
 sync();
 
 module.exports = {
-    sync
+    sync,
+    createSchool,
+    createStudent
+    
 }
