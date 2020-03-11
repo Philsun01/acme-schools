@@ -10,29 +10,26 @@ const sync = async() => {
         DROP TABLE IF EXISTS schools;
 
         CREATE TABLE schools(
-            id UUID PRIMARY KEY default uuid_generate_v4(),
+            id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
             name VARCHAR(100) NOT NULL UNIQUE,
             CHECK (char_length(name) > 0)
         );
 
         CREATE TABLE students(
-            id UUID PRIMARY KEY default uuid_generate_v4(),
+            id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
             first_name VARCHAR(255) NOT NULL,
             CHECK (char_length(first_name) > 0),
             last_name VARCHAR(255) NOT NULL,
             CHECK (char_length(last_name) > 0),
             school_id UUID REFERENCES schools(id)
-
         );
-
-        INSERT INTO students(first_name, last_name) VALUES('John', 'Smith');
     `;
 
     client.query(SQL);
 
-    const seedSchools = ['UCLA', 'USC', 'UCSD', 'Berkeley', 'Cal State Fullerton'];
+    const seedSchools = [{name: 'UCLA'}, {name: 'USC'}, {name: 'UCSD'}, {name: 'Berkeley'}, {name: 'Cal State Fullerton'}];
     const [UCLA, USC, UCSD, BERKELEY, CSUF] = await Promise.all(seedSchools.map(school=> createSchool(school)));
-    
+    console.log(UCLA);
     const seedStudents = [
         { firstName: 'Mike', lastName: 'Jordan', schoolId: USC.id },
         { firstName: 'Jim', lastName: 'Smith', schoolId: UCSD.id },
@@ -41,28 +38,19 @@ const sync = async() => {
         { firstName: 'Lisa', lastName: 'Kim', schoolId: UCLA.id },
         { firstName: 'Natalie', lastName: 'Flemming', schoolId: BERKELEY.id },
         { firstName: 'Stanley', lastName: 'Marsh', schoolId: UCLA.id },
-        { firstName: 'Bart', lastName: 'Simpson', schoolId: UCLA.id },
+        { firstName: 'Bart', lastName: 'Simpson', schoolId: UCLA.id }
     ];
-    const [Mike, Jim, Daniel, Jennifer, Lisa, Natalie, Stanley, Bart] = await Promise.all(seedStudents.map(student=>createStudent(student.firstName, student.lastName, student.schoolId)));
-    
-    /*//Check Initial Seed Data
-    console.log(await readStudents());
+    const [Mike, Jim, Daniel, Jennifer, Lisa, Natalie, Stanley, Bart] = await Promise.all(seedStudents.map(student=>createStudent(student)));
 
-    await Promise.all([ 
-        updateStudent({ firstName: 'MICKEEEEEY', lastName: 'MOUSEEEE', schoolId: CSUF.id, id: Mike.id }),
-        updateStudent({ firstName: 'DONALDDDD', lastName: 'DUCK', schoolId: CSUF.id, id: Bart.id })
-    ]);
-    //Check Post Data 
-    console.log(await readStudents());*/
 };
 
-const createSchool = async(name) => {
-    return (await client.query('INSERT INTO schools(name) VALUES($1) RETURNING *', [name])).rows[0];
+const createSchool = async(school) => {
+    return (await client.query('INSERT INTO schools(name) VALUES($1) RETURNING *', [school.name])).rows[0];
 };
 
-const createStudent = async(firstName, lastName, schoolId) => {
+const createStudent = async(student) => {
     const SQL = 'INSERT INTO students(first_name, last_name, school_id) VALUES( $1, $2, $3) RETURNING *';
-    return (await client.query(SQL, [firstName, lastName, schoolId])).rows[0];
+    return (await client.query(SQL, [student.firstName, student.lastName, student.schoolId])).rows[0];
 };
 
 const readSchools = async() => {
@@ -91,8 +79,6 @@ const deleteSchool = async(schoolId) => {
     await client.query('UPDATE students SET school_id = NULL WHERE school_id = $1', [schoolId]);
     return await client.query('DELETE FROM schools WHERE id = $1', [schoolId]);
 };
-
-sync();
 
 module.exports = {
     sync,

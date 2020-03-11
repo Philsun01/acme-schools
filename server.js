@@ -21,8 +21,25 @@ app.get('/api/schools', (req, res, next)=>{
 
 app.get('/api/students', (req, res, next)=>{
     db.readStudents()
-        .then( (data)=>res.send(data))
+        .then( data=>res.send(data))
         .catch(next);
 });
 
-app.listen(port, ()=> console.log(`Listening on ${port}`));
+app.post('/api/students', (req, res, next)=>{
+    console.log(req.body);
+    db.createStudent(req.body)
+       .then( data=>res.send(data))
+       .catch(next);
+});
+
+app.post('/api/schools', (req, res, next)=>{
+    console.log(req.body);
+    db.createSchool(req.body)
+       .then( data=>res.send(data))
+       .catch(next);
+});
+
+
+
+db.sync()
+.then( ()=> app.listen(port, ()=> console.log(`Listening on ${port}`)));
