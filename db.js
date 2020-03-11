@@ -21,7 +21,7 @@ const sync = async() => {
             CHECK (char_length(first_name) > 0),
             last_name VARCHAR(255) NOT NULL,
             CHECK (char_length(last_name) > 0),
-            "schoolId" UUID REFERENCES schools(id)
+            school_id UUID REFERENCES schools(id)
 
         );
 
@@ -45,19 +45,15 @@ const sync = async() => {
     ];
     const [Mike, Jim, Daniel, Jennifer, Lisa, Natalie, Stanley, Bart] = await Promise.all(seedStudents.map(student=>createStudent(student.firstName, student.lastName, student.schoolId)));
     
-    //Check Initial Seed Data
-    console.log(await readSchools());
+    /*//Check Initial Seed Data
+    console.log(await readStudents());
 
     await Promise.all([ 
-        updateSchool({name: 'Boston University', id: UCLA.id}),
-        updateSchool({name: 'NYU', id: USC.id}),
-        updateSchool({name: 'Arizona State', id: UCSD.id}),
-        updateSchool({name: 'UC Santa Barbara', id: BERKELEY.id}),
-        updateSchool({name: 'Western U', id: CSUF.id}),
+        updateStudent({ firstName: 'MICKEEEEEY', lastName: 'MOUSEEEE', schoolId: CSUF.id, id: Mike.id }),
+        updateStudent({ firstName: 'DONALDDDD', lastName: 'DUCK', schoolId: CSUF.id, id: Bart.id })
     ]);
     //Check Post Data 
-    console.log(await readSchools());
-
+    console.log(await readStudents());*/
 };
 
 const createSchool = async(name) => {
@@ -65,7 +61,7 @@ const createSchool = async(name) => {
 };
 
 const createStudent = async(firstName, lastName, schoolId) => {
-    const SQL = 'INSERT INTO students(first_name, last_name, "schoolId") VALUES( $1, $2, $3) RETURNING *';
+    const SQL = 'INSERT INTO students(first_name, last_name, school_id) VALUES( $1, $2, $3) RETURNING *';
     return (await client.query(SQL, [firstName, lastName, schoolId])).rows[0];
 };
 
@@ -78,8 +74,13 @@ const readStudents = async() => {
 };
 
 const updateSchool = async(school) => {
-    const SQL = 'UPDATE schools SET name = $1 WHERE id = $2';
+    const SQL = 'UPDATE schools SET name = $1 WHERE id = $2 RETURNING *';
     return (await client.query(SQL, [school.name, school.id])).rows[0];
+};
+
+const updateStudent = async(student) => {
+    const SQL = 'UPDATE students SET first_name = $1, last_name = $2, school_id = $3 WHERE id = $4 RETURNING *'; 
+    return (await client.query(SQL, [student.firstName, student.lastName, student.schoolId, student.id])).rows[0];
 };
 
 const deleteStudent = async(studentId) => {
@@ -87,7 +88,7 @@ const deleteStudent = async(studentId) => {
 };
 
 const deleteSchool = async(schoolId) => {
-    await client.query('UPDATE students SET "schoolId" = NULL WHERE "schoolId" = $1', [schoolId]);
+    await client.query('UPDATE students SET school_id = NULL WHERE school_id = $1', [schoolId]);
     return await client.query('DELETE FROM schools WHERE id = $1', [schoolId]);
 };
 
@@ -99,6 +100,8 @@ module.exports = {
     createStudent,
     readSchools,
     readStudents,
+    updateSchool,
+    updateStudent,
     deleteStudent,
     deleteSchool
     
