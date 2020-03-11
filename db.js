@@ -25,13 +25,15 @@ const sync = async() => {
 
         );
 
-        INSERT INTO schools(name) VALUES('UCLA');
         INSERT INTO students(first_name, last_name) VALUES('John', 'Smith');
     `;
 
     client.query(SQL);
-    const USC = await createSchool('USC');
-    console.log(USC);
+    const seedSchools = ['UCLA', 'USC', 'UCSD', 'Berkeley', 'Cal State Fullerton'];
+    const [UCLA, USC, UCSD, BERKELEY, CSUF] = 
+    await Promise.all(seedSchools.map(school=> createSchool(school)));
+    
+    console.log(UCLA);
 
 };
 
