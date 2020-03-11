@@ -45,14 +45,9 @@ const sync = async() => {
     ];
     const [Mike, Jim, Daniel, Jennifer, Lisa, Natalie, Stanley, Bart] = await Promise.all(seedStudents.map(student=>createStudent(student.firstName, student.lastName, student.schoolId)));
     await Promise.all([ 
-        deleteStudent(Mike.id),
-        deleteStudent(Jim.id),
-        deleteStudent(Daniel.id),
-        deleteStudent(Jennifer.id),
-        deleteStudent(Lisa.id),
-        deleteStudent(Natalie.id),
-        deleteStudent(Stanley.id)
-    ])
+        deleteSchool(UCLA.id)
+    ]);
+        
     console.log(await readStudents());
 
 };
@@ -74,8 +69,13 @@ const readStudents = async() => {
     return (await client.query('SELECT * FROM students')).rows;
 };
 
-const deleteStudent = async(id) => {
-    return await client.query('DELETE FROM students WHERE id = $1', [id]);
+const deleteStudent = async(studentId) => {
+    return await client.query('DELETE FROM students WHERE id = $1', [studentId]);
+};
+
+const deleteSchool = async(schoolId) => {
+    await client.query('UPDATE students SET "schoolId" = NULL WHERE "schoolId" = $1', [schoolId]);
+    return await client.query('DELETE FROM schools WHERE id = $1', [schoolId]);
 };
 
 sync();
@@ -86,6 +86,7 @@ module.exports = {
     createStudent,
     readSchools,
     readStudents,
-    deleteStudent
+    deleteStudent,
+    deleteSchool
     
 }
