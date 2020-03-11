@@ -44,11 +44,19 @@ const sync = async() => {
         { firstName: 'Bart', lastName: 'Simpson', schoolId: UCLA.id },
     ];
     const [Mike, Jim, Daniel, Jennifer, Lisa, Natalie, Stanley, Bart] = await Promise.all(seedStudents.map(student=>createStudent(student.firstName, student.lastName, student.schoolId)));
+    
+    //Check Initial Seed Data
+    console.log(await readSchools());
+
     await Promise.all([ 
-        deleteSchool(UCLA.id)
+        updateSchool({name: 'Boston University', id: UCLA.id}),
+        updateSchool({name: 'NYU', id: USC.id}),
+        updateSchool({name: 'Arizona State', id: UCSD.id}),
+        updateSchool({name: 'UC Santa Barbara', id: BERKELEY.id}),
+        updateSchool({name: 'Western U', id: CSUF.id}),
     ]);
-        
-    console.log(await readStudents());
+    //Check Post Data 
+    console.log(await readSchools());
 
 };
 
@@ -67,6 +75,11 @@ const readSchools = async() => {
 
 const readStudents = async() => {
     return (await client.query('SELECT * FROM students')).rows;
+};
+
+const updateSchool = async(school) => {
+    const SQL = 'UPDATE schools SET name = $1 WHERE id = $2';
+    return (await client.query(SQL, [school.name, school.id])).rows[0];
 };
 
 const deleteStudent = async(studentId) => {
