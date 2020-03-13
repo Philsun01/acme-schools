@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import SchoolList from './SchoolList';
-import StudentList from './StudentList';
+import CreateSchool from './CreateSchool';
+
 
 const App = () => {
 
@@ -28,7 +29,7 @@ const App = () => {
                 <li>{schools.length} Schools</li>
                 <li>{students.length} Students ({students.filter(s=>s.schoolId).length}) enrolled</li>
             </ul>
-           
+            <CreateSchool schools = {schools} setSchools = {setSchools}/>
             <SchoolList schools = {schools} students = {students}/>
             
         </div>
