@@ -23,12 +23,11 @@ const App = () => {
 
     return(
         <div>
-            <h1> This is the App.js</h1>
             {schools[0] && <h2>Test School is {schools[0].name}</h2>}
             {students[0] && <h2>Test Student is {students[0].firstName}</h2>}
            
-            <SchoolList />
-            <StudentList />
+            <SchoolList schools = {schools} students = {students}/>
+            
         </div>
     );
 }
