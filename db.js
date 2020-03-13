@@ -38,7 +38,9 @@ const sync = async() => {
         { firstName: 'Lisa', lastName: 'Kim', schoolId: UCLA.id },
         { firstName: 'Natalie', lastName: 'Flemming', schoolId: BERKELEY.id },
         { firstName: 'Stanley', lastName: 'Marsh', schoolId: UCLA.id },
-        { firstName: 'Bart', lastName: 'Simpson', schoolId: UCLA.id }
+        { firstName: 'Bart', lastName: 'Simpson', schoolId: UCLA.id },
+        { firstName: 'Lisa', lastName: 'Simpson', schoolId: null },
+        { firstName: 'Maggie', lastName: 'Simpson', schoolId: null },
     ];
     const [Mike, Jim, Daniel, Jennifer, Lisa, Natalie, Stanley, Bart] = await Promise.all(seedStudents.map(student=>createStudent(student)));
 
