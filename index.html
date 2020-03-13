@@ -1,23 +1,30 @@
 <html>
     <head>
+        <script src='/dist/main.js' defer></script>
         <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js'></script>
+        <link rel='stylesheet' type='text/css' href='/style/style.css'>
     </head>
-    <body style = 'background-color: grey'>
-        <h1>This is the header of webpage</h1>
+    <body>
+        <h1>This is the header of webpage.  Located in HTML file</h1>
+        <div id = 'root'></div>
 
         <script>
+            
+            const readSchool = async()=>{
+                const data = axios.get('./api/schools');
+                console.log(data.data);      
+            }
 
-            const apiStudent = async()=>{
-                axios.post('./api/students', {firstName: 'Mooster', lastName: 'Poof', schoolId: null})
-                    .then(res => console.log(res.data))
+            const apiDeleteSchool = async(id) => {
+                
             };
-
-            apiStudent();
 
             const apiSchool = async()=>{
                 axios.post('./api/schools', {name: 'NYU'})
                     .then(res => console.log(res.data))
             };
+
+            readSchool();
 
             apiSchool();
 
