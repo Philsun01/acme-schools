@@ -17,11 +17,11 @@ const sync = async() => {
 
         CREATE TABLE students(
             id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-            first_name VARCHAR(255) NOT NULL,
-            CHECK (char_length(first_name) > 0),
-            last_name VARCHAR(255) NOT NULL,
-            CHECK (char_length(last_name) > 0),
-            school_id UUID REFERENCES schools(id)
+            "firstName" VARCHAR(255) NOT NULL,
+            CHECK (char_length("firstName") > 0),
+            "lastName" VARCHAR(255) NOT NULL,
+            CHECK (char_length("lastName") > 0),
+            "schoolId" UUID REFERENCES schools(id)
         );
     `;
 
@@ -49,7 +49,7 @@ const createSchool = async(school) => {
 };
 
 const createStudent = async(student) => {
-    const SQL = 'INSERT INTO students(first_name, last_name, school_id) VALUES( $1, $2, $3) RETURNING *';
+    const SQL = 'INSERT INTO students("firstName", "lastName", "schoolId") VALUES( $1, $2, $3) RETURNING *';
     return (await client.query(SQL, [student.firstName, student.lastName, student.schoolId])).rows[0];
 };
 
@@ -67,7 +67,7 @@ const updateSchool = async(school) => {
 };
 
 const updateStudent = async(student) => {
-    const SQL = 'UPDATE students SET first_name = $1, last_name = $2, school_id = $3 WHERE id = $4 RETURNING *'; 
+    const SQL = 'UPDATE students SET "firstName" = $1, "lastName" = $2, "schoolId" = $3 WHERE id = $4 RETURNING *'; 
     return (await client.query(SQL, [student.firstName, student.lastName, student.schoolId, student.id])).rows[0];
 };
 
@@ -76,7 +76,7 @@ const deleteStudent = async(studentId) => {
 };
 
 const deleteSchool = async(schoolId) => {
-    await client.query('UPDATE students SET school_id = NULL WHERE school_id = $1', [schoolId]);
+    await client.query('UPDATE students SET "schoolId" = NULL WHERE "schoolId" = $1', [schoolId]);
     return await client.query('DELETE FROM schools WHERE id = $1', [schoolId]);
 };
 
