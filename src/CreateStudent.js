@@ -1,16 +1,26 @@
 import React, {useState} from 'react';
+import axios from 'axios';
 
 const CreateStudent = ({schools, students, setStudents}) => {
 
     const [schoolId, setSchoolId] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
+    const [errore, setError] = useState('');
 
     const onSubmit = (ev) => {
         ev.preventDefault();
         console.log(firstName);
         console.log(lastName);
         console.log(schoolId);
+        axios.post('./api/students',{firstName,lastName,schoolId})
+            .then(res=>{
+                console.log(res.data);
+                setStudents([res.data, ...students]);
+                setSchoolId('');
+                setFirstName('');
+                setLastName('');
+            });
     };
 
     return (
