@@ -23,8 +23,11 @@ const App = () => {
 
     return(
         <div>
-            {schools[0] && <h2>Test School is {schools[0].name}</h2>}
-            {students[0] && <h2>Test Student is {students[0].firstName}</h2>}
+            <h1>Acme Schools</h1>
+            <ul>
+                <li>{schools.length} Schools</li>
+                <li>{students.length} Students ({students.filter(s=>s.schoolId).length}) enrolled</li>
+            </ul>
            
             <SchoolList schools = {schools} students = {students}/>
             
