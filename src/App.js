@@ -40,11 +40,22 @@ const App = () => {
     return(
         <div>
             <HashRouter>
-            <Link to ="/">Acme Schools</Link>
-            <Link to ="/test">test</Link>
+            <Link to ='/'>Acme Schools</Link>
+            <Link to ='/test'>test</Link>
             
-                <Route path='/test' exact render={()=><h2>This is a test path</h2>} />
-                <Route path='/' exact component={Home} />
+                <Route path ='/test' exact render={()=><h2>This is a test path</h2>} />
+                
+                <Route path = '/students/:studentId' exact render = {(props)=>{ 
+                    const studentId = parseInt(props.match.params.studentId);
+
+                    return (
+                        <div>
+                            This is the current studentId: {studentId}
+                        </div>
+                    );
+
+                }}/>
+                <Route path ='/' exact component={Home} />
             </HashRouter>
             
             
