@@ -1,9 +1,8 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-//import StudentForm from './StudentForm';
 
-const CreateStudent = ({schools, students, setStudents}) => {
-
+const UpdateStudent = ({student, schools, setStudents, students}) => {
+    
     const [schoolId, setSchoolId] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -14,22 +13,37 @@ const CreateStudent = ({schools, students, setStudents}) => {
         const payload = {
             firstName,
             lastName,
-            schoolId
+            schoolId,
+            id: student.id
         }
         console.log(payload);
-        axios.post('./api/students',payload)
+        axios.put('./api/students',payload)
             .then(res=>{
                 console.log(res.data);
-                setStudents([res.data, ...students]);
+                setStudents(students.map(_student=>{
+                    if(_student.id === student.id){
+                        return payload;
+                    }
+                    return _student;
+                }));
                 setSchoolId('');
                 setFirstName('');
                 setLastName('');
+                window.location.hash = '#/';
             });
     };
 
+    useEffect(()=>{
+        if(student){
+            setFirstName(student.firstName);
+            setLastName(student.lastName);
+            setSchoolId(student.schoolId);
+        }
+    },[student])
+
     return (
         <div>
-            Create Student Form
+            Update Student Form
             <form onSubmit = {onSubmit}>
                 <input type='text' value = {firstName} placeholder='First Name' onChange={ev=>setFirstName(ev.target.value)}></input>
                 <input type='text' value = {lastName} placeholder='Last Name' onChange={ev=>setLastName(ev.target.value)}></input>
@@ -38,10 +52,10 @@ const CreateStudent = ({schools, students, setStudents}) => {
                     <option value= '' > none </option>
                     {schools.map(school => <option key={school.id} value={school.id}>{school.name}</option>)}
                 </select>
-                <button disabled = {!firstName.length > 0 || !lastName.length > 0}>Create</button>
+                <button disabled = {!firstName.length > 0 || !lastName.length > 0}>Update</button>
             </form>
         </div>
     );
-}
+};
 
-export default CreateStudent;
+export default UpdateStudent;

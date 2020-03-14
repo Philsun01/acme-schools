@@ -12,7 +12,7 @@ const SchoolList = ({schools, students})=> {
                     .map(student=>{
                         return (
                             <div key={student.id}>
-                                {student.firstName}
+                                <a href = {`#/students/${student.id}`}>{student.firstName}</a>
                             </div>
                         )}
                     )
@@ -31,7 +31,7 @@ const SchoolList = ({schools, students})=> {
                                 .map(student=>{
                                     return (
                                         <div key={student.id}>
-                                            {student.firstName}
+                                            <a href = {`#/students/${student.id}`}>{student.firstName}</a>
                                         </div>
                                     )}
                                 )

@@ -4,6 +4,7 @@ import axios from 'axios';
 import SchoolList from './SchoolList';
 import CreateSchool from './CreateSchool';
 import CreateStudent from './CreateStudent';
+import UpdateStudent from './UpdateStudent';
 
 
 const App = () => {
@@ -39,17 +40,18 @@ const App = () => {
 
     return(
         <div>
+            <h1><a href='#/'> Acme Schools </a></h1>
             <HashRouter>
-            <Link to ='/'>Acme Schools</Link>
-            <Link to ='/test'>test</Link>
+                <Link to ='/'>Home</Link>
+                <Link to ='/test'>test</Link>
             
                 <Route path ='/test' exact render={()=><h2>This is a test path</h2>} />
                 
-                <Route path = '/students/:studentId' exact render = {(props)=>{ 
-                    const studentId = parseInt(props.match.params.studentId);
-
+                <Route path = '/students/:studentId' render = {(props)=>{ 
+                    const studentId = props.match.params.studentId;
                     return (
                         <div>
+                            <UpdateStudent student = {students.find(student => student.id === studentId)} schools = {schools} setStudents = {setStudents} students = {students}/>
                             This is the current studentId: {studentId}
                         </div>
                     );
