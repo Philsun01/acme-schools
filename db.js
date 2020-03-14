@@ -51,6 +51,7 @@ const createSchool = async(school) => {
 };
 
 const createStudent = async(student) => {
+    if(student.schoolId === '') { student.schoolId = null};
     const SQL = 'INSERT INTO students("firstName", "lastName", "schoolId") VALUES( $1, $2, $3) RETURNING *';
     return (await client.query(SQL, [student.firstName, student.lastName, student.schoolId])).rows[0];
 };

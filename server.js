@@ -33,6 +33,9 @@ app.post('/api/schools', (req, res, next)=>{
 });
 
 app.post('/api/students', (req, res, next)=>{
+    console.log('****** serverside *******');
+    console.log(req.body);
+    console.log('*************************')
     db.createStudent(req.body)
        .then( data=>res.send(data))
        .catch(next);
