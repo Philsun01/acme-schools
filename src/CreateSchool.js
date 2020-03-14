@@ -11,7 +11,6 @@ const CreateSchool = ({schools, setSchools})=>{
 
         axios.post('./api/schools',{name})
         .then(res => {
-            console.log(res.data);
             setSchools([res.data, ...schools]);
             setName('');
         })

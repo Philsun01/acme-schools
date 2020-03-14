@@ -39,16 +39,14 @@ app.post('/api/students', (req, res, next)=>{
 });
 
 app.put('/api/students', (req, res, next)=>{
-    console.log(req.body);
     db.updateStudent(req.body)
         .then(data => res.send(data))
         .catch(next);
 })
 
 app.delete('/api/students/:id', (req, res, next)=>{
-    console.log(req.params.id);
     db.deleteStudent(req.params.id)
-        .then(data=> console.log(data))
+        .then(()=> res.sendStatus(200))
         .catch(next);
 });
 

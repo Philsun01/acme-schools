@@ -29,13 +29,12 @@ const sync = async() => {
 
     const seedSchools = [{name: 'UCLA'}, {name: 'USC'}, {name: 'UCSD'}, {name: 'Berkeley'}, {name: 'Cal State Fullerton'}];
     const [UCLA, USC, UCSD, BERKELEY, CSUF] = await Promise.all(seedSchools.map(school=> createSchool(school)));
-    console.log(UCLA);
     const seedStudents = [
         { firstName: 'Mike', lastName: 'Jordan', schoolId: USC.id },
         { firstName: 'Jim', lastName: 'Smith', schoolId: UCSD.id },
         { firstName: 'Daniel', lastName: 'Lee', schoolId: BERKELEY.id },
         { firstName: 'Jennifer', lastName: 'Ran', schoolId: CSUF.id },
-        { firstName: 'Lisa', lastName: 'Kim', schoolId: UCLA.id },
+        { firstName: 'Lydia', lastName: 'Kim', schoolId: UCLA.id },
         { firstName: 'Natalie', lastName: 'Flemming', schoolId: BERKELEY.id },
         { firstName: 'Stanley', lastName: 'Marsh', schoolId: UCLA.id },
         { firstName: 'Bart', lastName: 'Simpson', schoolId: UCLA.id },
@@ -70,8 +69,11 @@ const updateSchool = async(school) => {
 };
 
 const updateStudent = async(student) => {
+    if(student.schoolId === '') { student.schoolId = null};
     const SQL = 'UPDATE students SET "firstName" = $1, "lastName" = $2, "schoolId" = $3 WHERE id = $4 RETURNING *'; 
-    return (await client.query(SQL, [student.firstName, student.lastName, student.schoolId, student.id])).rows[0];
+    const res = (await client.query(SQL, [student.firstName, student.lastName, student.schoolId, student.id])).rows[0];
+    console.log(res);
+    return res;
 };
 
 const deleteStudent = async(studentId) => {

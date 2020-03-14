@@ -16,16 +16,16 @@ const UpdateStudent = ({student, schools, setStudents, students}) => {
             schoolId,
             id: student.id
         }
-        console.log(payload);
+
         axios.put('./api/students',payload)
             .then(res=>{
-                console.log(res.data);
-                setStudents(students.map(_student=>{
+                const update = students.map(_student=>{
                     if(_student.id === student.id){
-                        return payload;
+                        return res.data;
                     }
                     return _student;
-                }));
+                });
+                setStudents(update);
                 setSchoolId('');
                 setFirstName('');
                 setLastName('');
