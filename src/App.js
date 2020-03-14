@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import { Route, HashRouter, Link } from "react-router-dom";
 import axios from 'axios';
 import SchoolList from './SchoolList';
 import CreateSchool from './CreateSchool';
@@ -22,16 +23,31 @@ const App = () => {
 
     }, []);
 
+    const Home = () => {
+        return ( 
+            <div>
+                <ul>
+                    <li>{schools.length} Schools</li>
+                    <li>{students.length} Students ({students.filter(s=>s.schoolId).length}) enrolled</li>
+                </ul>
+                <CreateSchool schools = {schools} setSchools = {setSchools}/>
+                <CreateStudent schools = {schools} students = {students} setStudents = {setStudents} />
+                <SchoolList schools = {schools} students = {students}/>
+            </div>
+        );
+    }
+
     return(
         <div>
-            <h1>Acme Schools</h1>
-            <ul>
-                <li>{schools.length} Schools</li>
-                <li>{students.length} Students ({students.filter(s=>s.schoolId).length}) enrolled</li>
-            </ul>
-            <CreateSchool schools = {schools} setSchools = {setSchools}/>
-            <CreateStudent schools = {schools} students = {students} setStudents = {setStudents} />
-            <SchoolList schools = {schools} students = {students}/>
+            <HashRouter>
+            <Link to ="/">Acme Schools</Link>
+            <Link to ="/test">test</Link>
+            
+                <Route path='/test' exact render={()=><h2>This is a test path</h2>} />
+                <Route path='/' exact component={Home} />
+            </HashRouter>
+            
+            
             
         </div>
     );
