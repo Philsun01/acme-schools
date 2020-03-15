@@ -37,13 +37,14 @@ const App = () => {
             })
             .catch(ex=> console.log(ex))
     }
+    
 
     const Home = () => {
         return ( 
             <div>
                 <ul>
                     <li>{schools.length} Schools</li>
-                    <li>{students.length} Students ({students.filter(s=>s.schoolId).length}) enrolled</li>
+                    <li>{students.length} Students ({students.filter(student=>student.schoolId).length}) enrolled</li>
                 </ul>
                 <CreateSchool schools = {schools} setSchools = {setSchools}/>
                 <CreateStudent schools = {schools} students = {students} setStudents = {setStudents} />
@@ -64,11 +65,11 @@ const App = () => {
                 <Route path ='/test' exact render={()=><h2>This is a test path</h2>} />
                 
                 <Route path = '/students/:studentId' render = {(props)=>{ 
-                    const studentId = props.match.params.studentId;
+                    const student = students.find(student => student.id === props.match.params.studentId);
+
                     return (
                         <div>
-                            <UpdateStudent student = {students.find(student => student.id === studentId)} schools = {schools} setStudents = {setStudents} students = {students}/>
-                            This is the current studentId: {studentId}
+                            <UpdateStudent student = {student} schools = {schools} setStudents = {setStudents} students = {students}/>
                         </div>
                     );
 

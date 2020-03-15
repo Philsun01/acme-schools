@@ -17,7 +17,7 @@ const UpdateStudent = ({student, schools, setStudents, students}) => {
             id: student.id
         }
 
-        axios.put('./api/students',payload)
+        axios.put('./api/students', payload)
             .then(res=>{
                 const update = students.map(_student=>{
                     if(_student.id === student.id){
@@ -41,6 +41,23 @@ const UpdateStudent = ({student, schools, setStudents, students}) => {
         }
     },[student])
 
+    const destroyStudent = (studentId) => {
+        console.log(studentId);
+        axios.delete(`./api/students/${studentId}`)
+            .then( (res) => { 
+                console.log(students);
+                const update = students.filter( _student => {
+                    if(_student.id !== studentId){
+                        return _student;
+                    }; 
+                });
+                console.log(update);
+                setStudents(update);
+                window.location.hash = '#/';
+            })
+            .catch(ex => console.log(ex));
+    };
+
     return (
         <div>
             Update Student Form
@@ -54,6 +71,7 @@ const UpdateStudent = ({student, schools, setStudents, students}) => {
                 </select>
                 <button disabled = {!firstName.length > 0 || !lastName.length > 0}>Update</button>
             </form>
+                <button onClick = {() => destroyStudent(student.id)}> Delete Student </button>
         </div>
     );
 };
