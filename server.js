@@ -44,8 +44,20 @@ app.put('/api/students', (req, res, next)=>{
         .catch(next);
 })
 
+app.put('/api/schools', (req, res, next)=>{
+    db.updateSchool(req.body)
+        .then(data => res.send(data))
+        .catch(next);
+})
+
 app.delete('/api/students/:id', (req, res, next)=>{
     db.deleteStudent(req.params.id)
+        .then(()=> res.sendStatus(200))
+        .catch(next);
+});
+
+app.delete('/api/schools/:id', (req, res, next)=>{
+    db.deleteSchool(req.params.id)
         .then(()=> res.sendStatus(200))
         .catch(next);
 });

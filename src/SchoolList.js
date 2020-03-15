@@ -13,7 +13,7 @@ const SchoolList = ({schools, students, enroll})=> {
                     .map(student=>{
                         return (
                             <div key={student.id}>
-                                <a href = {`#/students/${student.id}`}>{student.firstName}</a>
+                                <a href = {`#/students/${student.id}`}>{student.firstName} {student.lastName}</a>
                             </div>
                         )}
                     )
@@ -26,9 +26,10 @@ const SchoolList = ({schools, students, enroll})=> {
                     return (
                         
                         <div key={school.id} className='card'>
-                            <h3>{school.name}</h3>
+                            <h3><a href = {`#/schools/${school.id}`}>{school.name}</a></h3>
                             <select onChange = {(ev)=>{
-                                enroll(students.find(student=>student.id===ev.target.value), school.id);
+                                const student = students.find(student => student.id === ev.target.value);
+                                enroll(student, school.id);
                                 }}>
                                 <option> -- Select Student -- </option>
                                 {
@@ -45,7 +46,7 @@ const SchoolList = ({schools, students, enroll})=> {
                                 .map(student=>{
                                     return (
                                         <div key={student.id}>
-                                            <a href = {`#/students/${student.id}`}>{student.firstName}</a>
+                                            <a href = {`#/students/${student.id}`}>{student.firstName} {student.lastName}</a>
                                             <button onClick = {()=> enroll(student, '')}>Unenroll</button>
                                         </div>
                                     )}

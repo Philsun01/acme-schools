@@ -71,9 +71,7 @@ const updateSchool = async(school) => {
 const updateStudent = async(student) => {
     if(student.schoolId === '') { student.schoolId = null};
     const SQL = 'UPDATE students SET "firstName" = $1, "lastName" = $2, "schoolId" = $3 WHERE id = $4 RETURNING *'; 
-    const res = (await client.query(SQL, [student.firstName, student.lastName, student.schoolId, student.id])).rows[0];
-    console.log(res);
-    return res;
+    return (await client.query(SQL, [student.firstName, student.lastName, student.schoolId, student.id])).rows[0];
 };
 
 const deleteStudent = async(studentId) => {

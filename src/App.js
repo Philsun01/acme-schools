@@ -5,6 +5,7 @@ import SchoolList from './SchoolList';
 import CreateSchool from './CreateSchool';
 import CreateStudent from './CreateStudent';
 import UpdateStudent from './UpdateStudent';
+import UpdateSchool from './UpdateSchool';
 
 
 const App = () => {
@@ -25,6 +26,7 @@ const App = () => {
     }, []);
 
     const enroll = (student, schoolId) => {
+        console.log( {...student, schoolId} );
         axios.put('./api/students',{...student, schoolId} )
             .then(res => {
                 const update = students.map(_student=>{
@@ -59,11 +61,17 @@ const App = () => {
         <div>
             <h1><a href='#/'> Acme Schools </a></h1>
             <HashRouter>
-                <Link to ='/'>Home</Link>
-                <Link to ='/test'>test</Link>
-            
-                <Route path ='/test' exact render={()=><h2>This is a test path</h2>} />
-                
+
+                <Route path = '/schools/:schoolId' render = {(props)=>{ 
+                    const school = schools.find(school => school.id === props.match.params.schoolId);
+
+                    return (
+                        <div>
+                            <UpdateSchool school = {school} schools = {schools} setSchools = {setSchools} students = {students} setStudents = {setStudents}/>
+                        </div>
+                    );
+
+                }}/>
                 <Route path = '/students/:studentId' render = {(props)=>{ 
                     const student = students.find(student => student.id === props.match.params.studentId);
 
