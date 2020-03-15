@@ -1,3 +1,40 @@
 body {
-  background-color: slategray;  
-};
+  background-color: lightslategray;  
+}
+
+.container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.create-form {
+  width: 20rem;
+  padding: 1rem;
+  border: 2px solid black;
+}
+
+input, select {
+  width: 10rem;
+  height: 2rem;
+}
+
+.container-cards {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card {
+  width: 12rem;
+  border: 2px solid black;
+  padding: 1rem;
+  margin: 1rem;
+}
+
+.card-big {
+  width: 20rem;
+}
+
+button {
+  margin: 0.25rem;
+  margin-left: 1rem;
+}

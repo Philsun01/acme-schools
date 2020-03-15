@@ -18,7 +18,7 @@ const CreateSchool = ({schools, setSchools})=>{
     };
 
     return (
-        <div>
+        <div className = 'create-form'>
             <h2> Create School Form </h2>
             { error.length > 0 && <div className = 'error'> {error} </div> }
             <form onSubmit = {onSubmit}>

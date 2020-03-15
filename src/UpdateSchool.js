@@ -6,7 +6,6 @@ const UpdateSchool = ({school, schools, setSchools, students, setStudents}) => {
     const [error, setError] = useState('');
     const onSubmit = (ev) => {
         ev.preventDefault();
-
         const payload = {
             name,
             id: school.id
@@ -51,7 +50,7 @@ const UpdateSchool = ({school, schools, setSchools, students, setStudents}) => {
     };
 
     return (
-        <div>
+        <div className = 'card card-big'>
             <h2> Update School Form </h2>
             { error.length > 0 && <div className = 'error'> {error} </div> }
             <form onSubmit = {onSubmit}>

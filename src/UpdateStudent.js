@@ -55,7 +55,7 @@ const UpdateStudent = ({student, schools, setStudents, students}) => {
     };
 
     return (
-        <div>
+        <div className = 'card card-big'>
             <h2> Update Student Form </h2>
             { error.length > 0 && <div className = 'error'> {error} </div> }
             <form onSubmit = {onSubmit}>

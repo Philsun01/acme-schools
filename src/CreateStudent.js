@@ -26,7 +26,7 @@ const CreateStudent = ({schools, students, setStudents}) => {
     };
 
     return (
-        <div>
+        <div className = 'create-form'>
             <h2> Create Student Form </h2>
             { error.length > 0 && <div className = 'error'> {error} </div> }
             <form onSubmit = {onSubmit}>

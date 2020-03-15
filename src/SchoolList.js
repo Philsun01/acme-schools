@@ -3,8 +3,7 @@ import React, {useState} from 'react';
 const SchoolList = ({schools, students, enroll})=> {
     
     return (
-        <div>
-            <h2>This is a school list</h2>
+        <div className = 'container-cards'>
             <div key='unenrolled' className='card'>
                 <h3>Unrolled Students</h3>
                 {
@@ -17,7 +16,6 @@ const SchoolList = ({schools, students, enroll})=> {
                         )}
                     )
                 }
-                <hr/>
             </div>
             
             {
@@ -51,7 +49,6 @@ const SchoolList = ({schools, students, enroll})=> {
                                     )}
                                 )
                             }
-                            <hr/>
                         </div>
                     );
                 })
