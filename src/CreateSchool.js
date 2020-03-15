@@ -14,12 +14,13 @@ const CreateSchool = ({schools, setSchools})=>{
             setSchools([res.data, ...schools]);
             setName('');
         })
-        .catch( ex => { console.log(ex) })
+        .catch( ex => setError(ex.response.data.message))
     };
 
     return (
         <div>
-            <h2> Create School</h2>
+            <h2> Create School Form </h2>
+            { error.length > 0 && <div className = 'error'> {error} </div> }
             <form onSubmit = {onSubmit}>
                 <input type='text' value={name} placeholder = 'School Name Here' onChange={ev=>setName(ev.target.value)}></input>
                 {error}

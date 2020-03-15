@@ -15,20 +15,20 @@ const CreateStudent = ({schools, students, setStudents}) => {
             lastName,
             schoolId
         }
-        console.log(payload);
         axios.post('./api/students',payload)
             .then(res=>{
-                console.log(res.data);
                 setStudents([res.data, ...students]);
                 setSchoolId('');
                 setFirstName('');
                 setLastName('');
-            });
+                setError('');
+            }).catch(ex => setError(ex.response.data.message));
     };
 
     return (
         <div>
-            Create Student Form
+            <h2> Create Student Form </h2>
+            { error.length > 0 && <div className = 'error'> {error} </div> }
             <form onSubmit = {onSubmit}>
                 <input type='text' value = {firstName} placeholder='First Name' onChange={ev=>setFirstName(ev.target.value)}></input>
                 <input type='text' value = {lastName} placeholder='Last Name' onChange={ev=>setLastName(ev.target.value)}></input>

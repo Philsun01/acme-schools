@@ -29,8 +29,10 @@ const UpdateStudent = ({student, schools, setStudents, students}) => {
                 setSchoolId('');
                 setFirstName('');
                 setLastName('');
+                setError('');
                 window.location.hash = '#/';
-            });
+            })
+            .catch(ex => setError(ex.response.data.message));
     };
 
     useEffect(()=>{
@@ -46,14 +48,16 @@ const UpdateStudent = ({student, schools, setStudents, students}) => {
         axios.delete(`./api/students/${studentId}`)
             .then( () => { 
                 setStudents(students.filter( _student => _student.id !== studentId));
+                setError('');
                 window.location.hash = '#/';
             })
-            .catch(ex => console.log(ex));
+            .catch(ex => setError(ex.response.data.message));
     };
 
     return (
         <div>
-            Update Student Form
+            <h2> Update Student Form </h2>
+            { error.length > 0 && <div className = 'error'> {error} </div> }
             <form onSubmit = {onSubmit}>
                 <input type='text' value = {firstName} placeholder='First Name' onChange={ev=>setFirstName(ev.target.value)}></input>
                 <input type='text' value = {lastName} placeholder='Last Name' onChange={ev=>setLastName(ev.target.value)}></input>

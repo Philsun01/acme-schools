@@ -3,6 +3,7 @@ import axios from 'axios';
 
 const UpdateSchool = ({school, schools, setSchools, students, setStudents}) => {
     const [name, setName] = useState('');
+    const [error, setError] = useState('');
     const onSubmit = (ev) => {
         ev.preventDefault();
 
@@ -22,7 +23,8 @@ const UpdateSchool = ({school, schools, setSchools, students, setStudents}) => {
                 setSchools(updatedSchools);
                 setName('');
                 window.location.hash = '#/';
-            });
+            })
+            .catch(ex => setError(ex.response.data.message));
     };
 
     useEffect(()=>{
@@ -45,17 +47,19 @@ const UpdateSchool = ({school, schools, setSchools, students, setStudents}) => {
                 }))
                 window.location.hash = '#/';
             })
-            .catch(ex => console.log(ex));
+            .catch(ex => setError(ex.response.data.message));
     };
 
     return (
         <div>
-            Update School Form
+            <h2> Update School Form </h2>
+            { error.length > 0 && <div className = 'error'> {error} </div> }
             <form onSubmit = {onSubmit}>
                 <input type='text' value = {name} placeholder='New School Name' onChange={ev=>setName(ev.target.value)}></input>
                 <button disabled = {!name.length > 0}>Update School Name</button>
             </form>
                 <button onClick = {() => destroySchool(school.id)}> Delete School </button>
+            
         </div>
     );
 

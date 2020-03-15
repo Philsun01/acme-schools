@@ -26,7 +26,6 @@ const App = () => {
     }, []);
 
     const enroll = (student, schoolId) => {
-        console.log( {...student, schoolId} );
         axios.put('./api/students',{...student, schoolId} )
             .then(res => {
                 const update = students.map(_student=>{

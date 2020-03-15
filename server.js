@@ -34,7 +34,7 @@ app.post('/api/schools', (req, res, next)=>{
 
 app.post('/api/students', (req, res, next)=>{
     db.createStudent(req.body)
-       .then( data=>res.send(data))
+       .then( data=> res.send(data))
        .catch(next);
 });
 

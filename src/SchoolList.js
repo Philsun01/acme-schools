@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
 
 const SchoolList = ({schools, students, enroll})=> {
-    const {enrollStudent, setEnrollStudent} = useState({});
-
+    
     return (
         <div>
             <h2>This is a school list</h2>
