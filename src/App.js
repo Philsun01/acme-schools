@@ -24,6 +24,20 @@ const App = () => {
 
     }, []);
 
+    const enroll = (student, schoolId) => {
+        axios.put('./api/students',{...student, schoolId} )
+            .then(res => {
+                const update = students.map(_student=>{
+                    if(_student.id === student.id){
+                        return res.data;
+                    }
+                    return _student;
+                });
+                setStudents(update);
+            })
+            .catch(ex=> console.log(ex))
+    }
+
     const Home = () => {
         return ( 
             <div>
@@ -33,10 +47,12 @@ const App = () => {
                 </ul>
                 <CreateSchool schools = {schools} setSchools = {setSchools}/>
                 <CreateStudent schools = {schools} students = {students} setStudents = {setStudents} />
-                <SchoolList schools = {schools} students = {students}/>
+                <SchoolList schools = {schools} students = {students} enroll = {enroll}/>
             </div>
         );
     }
+
+    
 
     return(
         <div>
